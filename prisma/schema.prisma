@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  STOP_REQUESTED
+  COMPLETED
+  FAILED
+}
+
+enum QualityStatus {
+  VERIFIED
+  NEEDS_REVIEW
+  INCOMPLETE
+}
+
+model Run {
+  id                  String    @id @default(cuid())
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  searchIndustry      String
+  searchLocation      String
+  searchDetailedCtx   String
+
+  customChecksRaw     String?
+  customChecksJson    Json?
+
+  status              RunStatus @default(QUEUED)
+  stopRequested       Boolean   @default(false)
+
+  targetLeadCount     Int       @default(25)
+
+  leads               Lead[]
+  events              LogEvent[]
+}
+
+model Lead {
+  id                          String        @id @default(cuid())
+  createdAt                   DateTime      @default(now())
+  updatedAt                   DateTime      @updatedAt
+
+  runId                       String
+  run                         Run           @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  decisionMakers              DecisionMaker[]
+
+  // Output schema (exact order handled at export time)
+  search_industry             String
+  search_location             String
+  search_detailed_context     String
+
+  company_category            String?
+  company_name                String?
+  address_street              String?
+  address_postcode            String?
+  address_locality            String?
+  address_city                String?
+  address_canton              String?
+  address_country             String?
+
+  decision_maker_name         String?
+  decision_maker_role         String?
+  decision_maker_email        String?
+  decision_maker_email_status String?
+  decision_maker_email_evidence String?
+  decision_maker_phone        String?
+  decision_maker_phone_status String?
+  decision_maker_phone_evidence String?
+
+  notes                       String?
+  company_website             String?
+  company_email               String?
+  company_phone               String?
+
+  company_size_employee_count String?
+  company_size_site_count     String?
+  company_size_site_locations String?
+
+  ai_custom_checks_json       Json?
+  evidence_json               Json?
+
+  quality_status              QualityStatus @default(INCOMPLETE)
+  quality_reasons             Json?
+
+  // Additional optional internal fields
+  company_uid_or_registration_id String?
+  legal_form                  String?
+  registry_last_update_date   String?
+  industry_code               String?
+  social_links                Json?
+  has_contact_form            Boolean?
+  has_contact_form_evidence   String?
+  has_booking_calendar        Boolean?
+  has_booking_calendar_evidence String?
+  tech_stack_hints            String?
+  tech_stack_hints_evidence   String?
+}
+
+model LogEvent {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  runId       String
+  run         Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  level       String   // info|warn|error
+  stage       String   // discovery|qualification|enrichment|export|system
+  message     String
+  data        Json?
+}
+
+model HttpCacheEntry {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  url         String   @unique
+  status      Int?
+  contentType String?
+  bodyText    String?  // text-only (html stripped)
+  bodyHash    String?
+  fetchedAt   DateTime?
+}
+
+model DecisionMaker {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  leadId         String
+  lead           Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  name           String
+  role           String?
+  email          String?
+  emailStatus    String?
+  emailEvidence  String?
+  phone          String?
+  phoneStatus    String?
+  phoneEvidence  String?
+  confidence     Int?
+  evidenceJson   Json?
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "name": "company_linkedin_about",
+      "enabled": false,
+      "urlTemplate": "{websiteOrigin}/about"
+    },
+    {
+      "name": "company_contact_page",
+      "enabled": true,
+      "urlTemplate": "{websiteOrigin}/contact"
+    },
+    {
+      "name": "company_impressum",
+      "enabled": true,
+      "urlTemplate": "{websiteOrigin}/impressum"
+    },
+    {
+      "name": "company_press",
+      "enabled": true,
+      "urlTemplate": "{websiteOrigin}/press"
+    },
+    {
+      "name": "company_newsroom",
+      "enabled": false,
+      "urlTemplate": "{websiteOrigin}/news"
+    },
+    {
+      "name": "company_investors",
+      "enabled": false,
+      "urlTemplate": "{websiteOrigin}/investors"
+    },
+    {
+      "name": "swiss_zefix_company_search",
+      "enabled": true,
+      "urlTemplate": "https://www.zefix.ch/de/search/entity/welcome"
+    },
+    {
+      "name": "swiss_uid_register_search",
+      "enabled": true,
+      "urlTemplate": "https://www.uid.admin.ch/search.aspx?lang=en"
+    },
+    {
+      "name": "swiss_shab_sogc_gazette",
+      "enabled": false,
+      "urlTemplate": "https://www.shab.ch/#!/gazette"
+    },
+    {
+      "name": "eu_bris_business_registers",
+      "enabled": false,
+      "urlTemplate": "https://webgate.ec.europa.eu/e-justice/searchBris.do"
+    },
+    {
+      "name": "eu_vies_vat_validation",
+      "enabled": false,
+      "urlTemplate": "https://ec.europa.eu/taxation_customs/vies/"
+    },
+    {
+      "name": "uk_companies_house_register",
+      "enabled": false,
+      "urlTemplate": "https://find-and-update.company-information.service.gov.uk/"
+    },
+    {
+      "name": "us_sec_edgar_filings_search",
+      "enabled": false,
+      "urlTemplate": "https://www.sec.gov/edgar/search/"
+    },
+    {
+      "name": "opencorporates_company_search",
+      "enabled": true,
+      "urlTemplate": "https://opencorporates.com/companies?q={companyName_url}"
+    },
+    {
+      "name": "gleif_lei_search",
+      "enabled": false,
+      "urlTemplate": "https://search.gleif.org/"
+    }
+  ]
+}

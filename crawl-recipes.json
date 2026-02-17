@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "enabled": true,
+  "recipes": [
+    {
+      "name": "opencorporates_search",
+      "enabled": true,
+      "startUrlTemplate": "https://opencorporates.com/companies?q={companyName_url}",
+      "maxSteps": 6,
+      "steps": [
+        { "type": "goto" },
+        { "type": "waitForTimeout", "ms": 800 },
+        { "type": "extractText", "selector": "body", "field": "pageText" }
+      ]
+    },
+    {
+      "name": "swiss_uid_register_search",
+      "enabled": true,
+      "startUrlTemplate": "https://www.uid.admin.ch/Search.aspx?lang=en",
+      "maxSteps": 10,
+      "steps": [
+        { "type": "goto" },
+        { "type": "waitForTimeout", "ms": 800 },
+        { "type": "fill", "selector": "#cphContent_ctl02_txtSearch", "valueTemplate": "{companyName}" },
+        { "type": "click", "selector": "#cphContent_btnSearch" },
+        { "type": "waitForSelector", "selector": "#ctl00_cphContent_gridSearchresult_ctl00", "timeoutMs": 15000 },
+        { "type": "click", "selector": "#ctl00_cphContent_gridSearchresult_ctl00 a[id$='_btnDetails']" },
+        { "type": "waitForTimeout", "ms": 1500 },
+        { "type": "extractText", "selector": "body", "field": "pageText" }
+      ]
+    }
+  ]
+}
