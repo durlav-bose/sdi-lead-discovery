@@ -49,6 +49,7 @@ export async function discoverCandidates(params: {
   }
 
   // If a Google Maps API key is provided, use Google Places (New) for real discovery.
+  console.log(`googleMapsKey=${env.GOOGLE_MAPS_API_KEY ? "YES" : "NO"}`);
   if (env.GOOGLE_MAPS_API_KEY) {
     const candidates = await googlePlacesNewDiscover({
       industry: params.industry,
@@ -58,6 +59,8 @@ export async function discoverCandidates(params: {
       regionCode: env.GOOGLE_PLACES_REGION,
       languageCode: env.GOOGLE_PLACES_LANGUAGE,
     });
+
+    console.log(`Discovered ${candidates.length} candidates from Google Places for industry="${params.industry}" location="${params.location}"`);
 
     return { source: "google_places", candidates };
   }
