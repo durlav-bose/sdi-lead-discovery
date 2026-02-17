@@ -6,7 +6,10 @@ const EnvSchema = z.object({
   APP_BASE_URL: z.string().default("http://localhost:3000"),
 
   // Optional: enable real discovery via Google Places / Geocoding
-  GOOGLE_MAPS_API_KEY: z.string().min(1).optional(),
+  GOOGLE_MAPS_API_KEY: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.string().min(1).optional()
+  ),
   GOOGLE_PLACES_REGION: z.string().default("ch"),
   GOOGLE_PLACES_LANGUAGE: z.string().default("de"),
 
